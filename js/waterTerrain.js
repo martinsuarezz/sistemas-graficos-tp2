@@ -23,6 +23,7 @@ class WaterTerrain{
         this.yShift = 15;
 
         this.texture = null;
+        this.reflex_texture = null;
 
         this.lightVector = [1, -1, 1];
 
@@ -47,6 +48,26 @@ class WaterTerrain{
         }
         texture.image.src = file;
         this.texture = texture;
+    }
+
+    loadReflectionTexture(file){
+        let texture = gl.createTexture();
+        texture.image = new Image();
+
+        texture.image.onload = function () {
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); 					// invierto el ejeY					
+            gl.bindTexture(gl.TEXTURE_2D, texture); 						// activo la textura
+            
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);	// cargo el bitmap en la GPU
+            
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);					// selecciono filtro de magnificacion
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);	// selecciono filtro de minificacion
+            
+            gl.generateMipmap(gl.TEXTURE_2D);		// genero los mipmaps
+            gl.bindTexture(gl.TEXTURE_2D, null);
+        }
+        texture.image.src = file;
+        this.reflex_texture = texture;
     }
         
     initBuffers(){
@@ -177,22 +198,16 @@ class WaterTerrain{
                 gl.vertexAttribPointer(vertexNormalAttribute, this.webgl_normal_buffer.itemSize, gl.FLOAT, false, 0, 0);
                 */
                 
-                let samplerUniform0 = gl.getUniformLocation(glProgram4, "uSampler");
+                let samplerUniform0 = gl.getUniformLocation(glProgram4, "uSampler1");
                 gl.activeTexture(gl.TEXTURE1);
                 gl.bindTexture(gl.TEXTURE_2D, this.texture);
                 gl.uniform1i(samplerUniform0, 1);
-                
-                /*
-                let samplerUniform1 = gl.getUniformLocation(glProgram4, "uSampler1");
-                gl.activeTexture(gl.TEXTURE2);
-                gl.bindTexture(gl.TEXTURE_2D, this.textures[1]);
-                gl.uniform1i(samplerUniform1, 2);
 
-                let samplerUniform2 = gl.getUniformLocation(glProgram4, "uSampler2");
-                gl.activeTexture(gl.TEXTURE3);
-                gl.bindTexture(gl.TEXTURE_2D, this.textures[2]);
-                gl.uniform1i(samplerUniform2, 3);
-                */
+                let samplerUniform1 = gl.getUniformLocation(glProgram4, "uSampler2");
+                gl.activeTexture(gl.TEXTURE2);
+                gl.bindTexture(gl.TEXTURE_2D, this.reflex_texture);
+                gl.uniform1i(samplerUniform1, 2);
+                
                 
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.webgl_index_buffer);
                 

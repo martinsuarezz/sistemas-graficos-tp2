@@ -230,6 +230,7 @@ function createObjects(){
     terrain = new Terrain(plotSize, plotsShown, plotsAmmount, 225, 225);
     water = new WaterTerrain(plotSize, plotsShown, plotsAmmount, 200, 200);
     water.loadTexture("textures/agua.jpg");
+    water.loadReflectionTexture("textures/cielo_reflex.jpg");
     water.initBuffers();
     terrain.initHeightTexture("img/heightmap4.png");
     terrain.initTexture("img/tierra.jpg");
