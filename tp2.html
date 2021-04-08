@@ -77,8 +77,8 @@
                 gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(aVertexPosition, 1.0);
 
                 vPosWorld = (modelMatrix * vec4(aVertexPosition, 1.0)).xyz;    //la posicion en coordenadas de mundo
-                //vNormal = (normalMatrix * vec4(aVertexNormal, 1.0)).xyz;       //la normal en coordenadas de mundo
-                vNormal = aVertexNormal;       
+                vNormal = (normalMatrix * vec4(aVertexNormal, 1.0)).xyz;       //la normal en coordenadas de mundo
+                //vNormal = aVertexNormal;       
                 vUv = aUv;
                 modelPosition = aVertexPosition;
             }
@@ -203,8 +203,8 @@
           const float kz1 = 0.03;
           const float w1 = 1.0;
 
-          const float A2 = 0.5;
-          const float kx2 = 1.0;
+          const float A2 = 0.2;
+          const float kx2 = 2.0;
           const float kz2 = -1.0;
           const float w2 = 0.3;
 
@@ -259,11 +259,11 @@
             varying vec3 vPosWorld;
 
             vec3 calculateIlumination(vec3 normal){
-              const float ambientReflection = 0.3;
+              const float ambientReflection = 0.1;
               const vec3 ambientLight = vec3(1.0, 1.0, 1.0);
 
               const vec3 lightVector = vec3(0, 1.0, 0);
-              const float diffuseReflection = 0.3;
+              const float diffuseReflection = 0.1;
               const vec3 diffuseLight = vec3(1.0, 1.0, 1.0);
 
               return ambientReflection * ambientLight + diffuseReflection * dot(lightVector, normal) * diffuseLight;
@@ -272,7 +272,7 @@
             void main(void) {
                 vec3 ilum = calculateIlumination(vNormal);
 
-                vec3 color = mix(objColor, ilum, 0.5);
+                vec3 color = mix(objColor, ilum, 0.2);
 
                 /*
                 gl_FragColor = vec4(color, 1.0);
@@ -284,6 +284,7 @@
                 */
 
                 gl_FragColor = vec4(color, 1.0);
+                //gl_FragColor = vec4(vNormal, 1.0);
             }
         </script>
 
@@ -360,7 +361,7 @@
                 auxUv.y = modelPosition.y * uvFactorY + shiftY;
 
                 vec3 texture=texture2D(uSampler, auxUv).xyz;
-                vec3 color = mix(texture, ilum, 0.5);
+                vec3 color = mix(texture, ilum, 0.2);
                 //color = vec3(vPosWorld.y - 100.0, 1.0, 1.0);
                 //color = vec3(auxUv.x, auxUv.y, 0.0);
 
@@ -613,15 +614,23 @@
           uniform vec3 lightVector;
           uniform sampler2D uSampler1;
           uniform sampler2D uSampler2;
+
+          uniform vec3 cameraPos;
           
           void main(void) {
+              vec3 worldNormal = vec3(0, 1.0, 0);
+              vec3 eyeToSurfaceDir = normalize(vPosWorld - cameraPos);
+              //eyeToSurfaceDir = normalize(cameraPos);
+              vec3 direction = reflect(eyeToSurfaceDir, vNormal);
+              vec2 directionUV = normalize(direction.xz);
 
               vec3 texture1=texture2D(uSampler1, vUv).xyz;
-              vec3 texture2=texture2D(uSampler2, vUv).xyz;
+              vec3 texture2=texture2D(uSampler2, directionUV).xyz;
 
               vec3 color;
 
               color = mix(texture1, texture2, 0.4);
+              //color = eyeToSurfaceDir;
 
               gl_FragColor = vec4(color, 1.0);
           }

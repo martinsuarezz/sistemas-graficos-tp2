@@ -27,7 +27,7 @@ var viewMatrix = mat4.create();
 var projMatrix = mat4.create();
 var normalMatrix = mat4.create();
 var rotate_angle = -1.57078;
-var cameraPosition = null;
+var cameraPosition = [1, 0, 0];
 
 var xElement, yElement, zElement,
     speedElement;
@@ -38,7 +38,7 @@ var isMobile = /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 //var cabin = new Cabin();
 //var bar = new Cylinder();
-var skid1, cabin, helicopter, aux, camera, sphere, water;
+var skid1, cabin, helicopter, aux, camera, sphere, water, extra;
 //var controller = new Controller();
 var plotSize = 600;
 var plotsAmmount = 8; // 8
@@ -230,7 +230,7 @@ function createObjects(){
     terrain = new Terrain(plotSize, plotsShown, plotsAmmount, 225, 225);
     water = new WaterTerrain(plotSize, plotsShown, plotsAmmount, 200, 200);
     water.loadTexture("textures/agua.jpg");
-    water.loadReflectionTexture("textures/cielo_reflex.jpg");
+    water.loadReflectionTexture("textures/cielo_reflex2.jpg");
     water.initBuffers();
     terrain.initHeightTexture("img/heightmap4.png");
     terrain.initTexture("img/tierra.jpg");
@@ -244,77 +244,80 @@ function setupVertexShaderMatrix(){
     //var modelMatrixUniform = gl.getUniformLocation(glProgram, "modelMatrix");
     var viewMatrixUniform  = gl.getUniformLocation(glProgram, "viewMatrix");
     var projMatrixUniform  = gl.getUniformLocation(glProgram, "projMatrix");
-    var normalMatrixUniform  = gl.getUniformLocation(glProgram, "normalMatrix");
+    //var normalMatrixUniform  = gl.getUniformLocation(glProgram, "normalMatrix");
 
     //gl.uniformMatrix4fv(modelMatrixUniform, false, modelMatrix);
     gl.uniformMatrix4fv(viewMatrixUniform, false, viewMatrix);
     gl.uniformMatrix4fv(projMatrixUniform, false, projMatrix);
-    gl.uniformMatrix4fv(normalMatrixUniform, false, normalMatrix);
+    //gl.uniformMatrix4fv(normalMatrixUniform, false, normalMatrix);
 
     gl.useProgram(glProgram2);
 
     //var modelMatrixUniform = gl.getUniformLocation(glProgram2, "modelMatrix");
     var viewMatrixUniform2  = gl.getUniformLocation(glProgram2, "viewMatrix");
     var projMatrixUniform2  = gl.getUniformLocation(glProgram2, "projMatrix");
-    var normalMatrixUniform2 = gl.getUniformLocation(glProgram2, "normalMatrix");
+    //var normalMatrixUniform2 = gl.getUniformLocation(glProgram2, "normalMatrix");
 
     //gl.uniformMatrix4fv(modelMatrixUniform, false, modelMatrix);
     gl.uniformMatrix4fv(viewMatrixUniform2, false, viewMatrix);
     gl.uniformMatrix4fv(projMatrixUniform2, false, projMatrix);
-    gl.uniformMatrix4fv(normalMatrixUniform2, false, normalMatrix);
+    //gl.uniformMatrix4fv(normalMatrixUniform2, false, normalMatrix);
 
     gl.useProgram(glProgram3);
 
     //var modelMatrixUniform = gl.getUniformLocation(glProgram2, "modelMatrix");
     var viewMatrixUniform2  = gl.getUniformLocation(glProgram3, "viewMatrix");
     var projMatrixUniform2  = gl.getUniformLocation(glProgram3, "projMatrix");
-    var normalMatrixUniform2 = gl.getUniformLocation(glProgram3, "normalMatrix");
+    //var normalMatrixUniform2 = gl.getUniformLocation(glProgram3, "normalMatrix");
 
     //gl.uniformMatrix4fv(modelMatrixUniform, false, modelMatrix);
     gl.uniformMatrix4fv(viewMatrixUniform2, false, viewMatrix);
     gl.uniformMatrix4fv(projMatrixUniform2, false, projMatrix);
-    gl.uniformMatrix4fv(normalMatrixUniform2, false, normalMatrix);
+    //gl.uniformMatrix4fv(normalMatrixUniform2, false, normalMatrix);
 
     gl.useProgram(glProgram4);
 
     //var modelMatrixUniform = gl.getUniformLocation(glProgram2, "modelMatrix");
     var viewMatrixUniform2  = gl.getUniformLocation(glProgram4, "viewMatrix");
     var projMatrixUniform2  = gl.getUniformLocation(glProgram4, "projMatrix");
-    var normalMatrixUniform2 = gl.getUniformLocation(glProgram4, "normalMatrix");
+    //var normalMatrixUniform2 = gl.getUniformLocation(glProgram4, "normalMatrix");
 
     //gl.uniformMatrix4fv(modelMatrixUniform, false, modelMatrix);
     gl.uniformMatrix4fv(viewMatrixUniform2, false, viewMatrix);
     gl.uniformMatrix4fv(projMatrixUniform2, false, projMatrix);
-    gl.uniformMatrix4fv(normalMatrixUniform2, false, normalMatrix);
+    //gl.uniformMatrix4fv(normalMatrixUniform2, false, normalMatrix);
 
     gl.useProgram(glProgram5);
 
     //var modelMatrixUniform = gl.getUniformLocation(glProgram2, "modelMatrix");
     var viewMatrixUniform2  = gl.getUniformLocation(glProgram5, "viewMatrix");
     var projMatrixUniform2  = gl.getUniformLocation(glProgram5, "projMatrix");
-    var normalMatrixUniform2 = gl.getUniformLocation(glProgram5, "normalMatrix");
+    //var normalMatrixUniform2 = gl.getUniformLocation(glProgram5, "normalMatrix");
 
     //gl.uniformMatrix4fv(modelMatrixUniform, false, modelMatrix);
     gl.uniformMatrix4fv(viewMatrixUniform2, false, viewMatrix);
     gl.uniformMatrix4fv(projMatrixUniform2, false, projMatrix);
-    gl.uniformMatrix4fv(normalMatrixUniform2, false, normalMatrix);
+    //gl.uniformMatrix4fv(normalMatrixUniform2, false, normalMatrix);
 
     gl.useProgram(glProgram6);
 
     //var modelMatrixUniform = gl.getUniformLocation(glProgram2, "modelMatrix");
     var viewMatrixUniform2  = gl.getUniformLocation(glProgram6, "viewMatrix");
     var projMatrixUniform2  = gl.getUniformLocation(glProgram6, "projMatrix");
-    var normalMatrixUniform2 = gl.getUniformLocation(glProgram6, "normalMatrix");
+    //var normalMatrixUniform2 = gl.getUniformLocation(glProgram6, "normalMatrix");
 
     //gl.uniformMatrix4fv(modelMatrixUniform, false, modelMatrix);
     gl.uniformMatrix4fv(viewMatrixUniform2, false, viewMatrix);
     gl.uniformMatrix4fv(projMatrixUniform2, false, projMatrix);
-    gl.uniformMatrix4fv(normalMatrixUniform2, false, normalMatrix);
+    //gl.uniformMatrix4fv(normalMatrixUniform2, false, normalMatrix);
 
     gl.useProgram(glProgram);
 }                  
 
 function drawScene(time){
+    extra = new Cylinder();
+    extra.setPosition(-140, 50, 140);
+    extra.draw();
     helicopter.setScale(0.05);
     pad.setPosition(-140, 10, 138);
     pad.setScale(1, 1, 2);

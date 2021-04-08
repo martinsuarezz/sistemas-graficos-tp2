@@ -96,6 +96,12 @@ class Objeto3D{
         var modelMatrixUniform = gl.getUniformLocation(glProgram, "modelMatrix");
         gl.uniformMatrix4fv(modelMatrixUniform, false, this.matrizModelado);
 
+        let normalMatrix = mat4.create();
+        mat4.invert(normalMatrix, this.matrizModelado);
+        mat4.transpose(normalMatrix, normalMatrix);
+        var normalMatrixUniform = gl.getUniformLocation(glProgram, "normalMatrix");
+        gl.uniformMatrix4fv(normalMatrixUniform, false, normalMatrix);
+
         var objColor = gl.getUniformLocation(glProgram, "objColor");
         gl.uniform3fv(objColor, this.color);
 
@@ -151,6 +157,12 @@ class Objeto3D{
 
         var modelMatrixUniform = gl.getUniformLocation(this.program, "modelMatrix");
         gl.uniformMatrix4fv(modelMatrixUniform, false, this.matrizModelado);
+
+        let normalMatrix = mat4.create();
+        mat4.invert(normalMatrix, this.matrizModelado);
+        mat4.transpose(normalMatrix, normalMatrix);
+        var normalMatrixUniform = gl.getUniformLocation(this.program, "normalMatrix");
+        gl.uniformMatrix4fv(normalMatrixUniform, false, normalMatrix);
 
         let samplerUniform = gl.getUniformLocation(this.program, "uSampler");
         gl.activeTexture(gl.TEXTURE0);

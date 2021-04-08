@@ -14,7 +14,7 @@ class SweptSurface{
         @param {Array<float>} levelsDelta El array debe contener numeros del 0 a 1.
         Indican que sección de la curva tomar para cada nivel.
     */
-    constructor(form, path, points, levels, lid = true, scale, levelsDelta){
+    constructor(form, path, points, levels, lid = true, scale, levelsDelta, invertNormal = true){
         this.indexBuffer = [];
         this.positionBuffer = [];
         this.normalBuffer = [];
@@ -33,7 +33,7 @@ class SweptSurface{
         this.pathTangentsList = null;
         
         this.calculateLevelMatrix();
-        this.generateSurface();
+        this.generateSurface(invertNormal);
     }
 
     calculateLevelMatrix(){
@@ -80,7 +80,7 @@ class SweptSurface{
         }
     }
 
-    generateSurface(){
+    generateSurface(invertNormal){
         if (this.lid) {
             for (let i = 0; i < this.formPointsList.length; i++){
                 let u = i/this.points;
@@ -97,6 +97,9 @@ class SweptSurface{
                 let nrm = vec3.create();
                 vec3.copy(nrm, this.pathTangentsList[0]);
                 vec3.scale(nrm, nrm, -1);
+
+                if (invertNormal)
+                    nrm = [-nrm[0], -nrm[1], nrm[2]];
 
                 this.normalBuffer.push(nrm[0]);
                 this.normalBuffer.push(nrm[1]);
@@ -130,6 +133,9 @@ class SweptSurface{
                 var tang2 = this.pathTangentsList[i];
                 vec3.cross(nrm, tang1, tang2);
 
+                if (invertNormal)
+                    nrm = [-nrm[0], -nrm[1], nrm[2]];
+
                 this.normalBuffer.push(nrm[0]);
                 this.normalBuffer.push(nrm[1]);
                 this.normalBuffer.push(nrm[2]);
@@ -157,8 +163,11 @@ class SweptSurface{
                 let nrm = vec3.create();
                 vec3.copy(nrm, this.pathTangentsList[this.pathTangentsList.length - 1]);
 
-                this.normalBuffer.push(nrm[0]);
-                this.normalBuffer.push(nrm[1]);
+                if (invertNormal)
+                    nrm = [-nrm[0], -nrm[1], nrm[2]];
+
+                this.normalBuffer.push(-nrm[0]);
+                this.normalBuffer.push(-nrm[1]);
                 this.normalBuffer.push(nrm[2]);
 
                 var uvs=[0, u];

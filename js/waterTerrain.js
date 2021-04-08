@@ -177,6 +177,11 @@ class WaterTerrain{
 
                 var lightVectorUniform = gl.getUniformLocation(glProgram4, "lightVector");
                 gl.uniform3fv(lightVectorUniform, this.lightVector);
+
+                let cameraPos = [cameraPosition[0], cameraPosition[1], cameraPosition[2]]
+                //console.log(cameraPos);
+                var cameraPositionUniform = gl.getUniformLocation(glProgram4, "cameraPos");
+                gl.uniform3fv(cameraPositionUniform, cameraPos);
                 
                 var timeUniform = gl.getUniformLocation(glProgram4, "time");
                 gl.uniform1f(timeUniform, time);
