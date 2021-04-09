@@ -315,9 +315,6 @@ function setupVertexShaderMatrix(){
 }                  
 
 function drawScene(time){
-    extra = new Cylinder();
-    extra.setPosition(-140, 50, 140);
-    extra.draw();
     helicopter.setScale(0.05);
     pad.setPosition(-140, 10, 138);
     pad.setScale(1, 1, 2);
