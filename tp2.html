@@ -266,7 +266,11 @@
               const float diffuseReflection = 0.1;
               const vec3 diffuseLight = vec3(1.0, 1.0, 1.0);
 
-              return ambientReflection * ambientLight + diffuseReflection * dot(lightVector, normal) * diffuseLight;
+              const vec3 lightVector2 = normalize(vec3(1.0, 0.2, 0));
+              const float diffuseReflection2 = 0.13;
+              const vec3 diffuseLight2 = vec3(1.0, 1.0, 1.0);
+
+              return ambientReflection * ambientLight + diffuseReflection * dot(lightVector, normal) * diffuseLight + diffuseReflection2 * dot(lightVector2, normal) * diffuseLight2;
             }
 
             void main(void) {
@@ -340,10 +344,14 @@
               const vec3 ambientLight = vec3(1.0, 1.0, 1.0);
 
               const vec3 lightVector = vec3(0, 1.0, 0);
-              const float diffuseReflection = 0.3;
+              const float diffuseReflection = 0.05;
               const vec3 diffuseLight = vec3(1.0, 1.0, 1.0);
 
-              return ambientReflection * ambientLight + diffuseReflection * dot(lightVector, normal) * diffuseLight;
+              const vec3 lightVector2 = normalize(vec3(1.0, 0.2, 0));
+              const float diffuseReflection2 = 0.18;
+              const vec3 diffuseLight2 = vec3(1.0, 1.0, 1.0);
+
+              return ambientReflection * ambientLight + diffuseReflection * dot(lightVector, normal) * diffuseLight + diffuseReflection2 * dot(lightVector2, normal) * diffuseLight2;
             }
 
             void main(void) {
@@ -361,7 +369,7 @@
                 auxUv.y = modelPosition.y * uvFactorY + shiftY;
 
                 vec3 texture=texture2D(uSampler, auxUv).xyz;
-                vec3 color = mix(texture, ilum, 0.2);
+                vec3 color = mix(texture, ilum, 0.3);
                 //color = vec3(vPosWorld.y - 100.0, 1.0, 1.0);
                 //color = vec3(auxUv.x, auxUv.y, 0.0);
 
